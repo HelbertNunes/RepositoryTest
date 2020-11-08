@@ -6,9 +6,9 @@ using TesteNava.Domain.Models;
 
 namespace TesteNava.Data.Context
 {
-    class TesteNavaDbContext : DbContext
+    public class TesteNavaDbContext : DbContext
     {
-        public  TesteNavaDbContext(DbContextOptions options) : base(options){ }
+        public TesteNavaDbContext(DbContextOptions options) : base(options) { }
 
         public DbSet<Sale> Sales { get; set; }
         public DbSet<SaleItem> SaleItems { get; set; }
