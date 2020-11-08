@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace TesteNava.Domain.Models
+namespace TesteNava.API.ViewModels
 {
-    public class Seller : Entity
-    {       
+    public class SellerViewModel
+    {
+        public Guid Id { get; set; }
         public int Cpf { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
-        public IEnumerable<Sale> Sales { get; set; }
+        public IEnumerable<SaleViewModel> Sales { get; set; }
     }
 }
