@@ -24,7 +24,6 @@ namespace TesteNava.API.Controllers
             _saleRepository = saleRepository;
             _mapper = mapper;
             _saleService = saleService;
-            _saleService.CrateInitialRegisters();
         }
         // GET: api/<SalesController>
         [HttpGet]
@@ -57,6 +56,14 @@ namespace TesteNava.API.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+        }
+
+        //Endpoint apenas para adicionar registros de teste na memória
+        [HttpGet("CreateRegisters")]
+        public ActionResult CreateRegisters()
+        {
+            _saleService.CrateInitialRegisters();
+            return Ok();
         }
     }
 }

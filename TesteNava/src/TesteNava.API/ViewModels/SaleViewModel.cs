@@ -10,8 +10,9 @@ namespace TesteNava.API.ViewModels
     {
         public Guid Id { get; set; }
         public Guid SellerId { get; set; }
-        public SellerViewModel Seller { get; set; }
+        public DateTime SaleDate { get; set; }
         public string Status { get; set; }
+        public SellerViewModel Seller { get; set; }
         public IEnumerable<SaleItemViewModel> SaleItems { get; set; }
     }
 }

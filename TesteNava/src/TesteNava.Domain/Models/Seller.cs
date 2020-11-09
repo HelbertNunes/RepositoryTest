@@ -10,7 +10,7 @@ namespace TesteNava.Domain.Models
         public string Name { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
-        public IEnumerable<Sale> Sales { get; set; }
+        public List<Sale> Sales { get; set; }
 
         public Seller(){}
         public Seller(string cpf, string name, string email, string phone)
@@ -19,6 +19,11 @@ namespace TesteNava.Domain.Models
             Name = name;
             Email = email;
             PhoneNumber = phone;
+            Sales = new List<Sale>();
+        }
+        public void AddSale(Sale sale)
+        {
+            Sales.Add(sale);
         }
     }
 }

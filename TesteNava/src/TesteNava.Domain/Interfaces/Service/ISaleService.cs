@@ -6,6 +6,6 @@ namespace TesteNava.Domain.Interfaces.Service
 {
     public interface ISaleService
     {
-        void CrateInitialRegisters();
+         void CrateInitialRegisters();
     }
 }
