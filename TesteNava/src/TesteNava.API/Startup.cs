@@ -36,6 +36,10 @@ namespace TesteNava.API
                 options.UseInMemoryDatabase("InMemoryProvider");
             });
 
+            services.AddControllersWithViews()
+                        .AddNewtonsoftJson(options =>
+                         options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
             services.AddControllers();
             services.AddAutoMapper(typeof(Startup));
             services.DependencySolver();

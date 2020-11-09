@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
+using TesteNava.Data.Mappings;
 using TesteNava.Domain.Models;
 
 namespace TesteNava.Data.Context
@@ -16,10 +18,9 @@ namespace TesteNava.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(TesteNavaDbContext).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(TesteNavaDbContext).Assembly);         
 
             base.OnModelCreating(modelBuilder);
         }
-
     }
 }

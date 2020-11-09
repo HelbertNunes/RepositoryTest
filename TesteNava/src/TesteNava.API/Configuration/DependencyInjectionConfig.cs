@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using TesteNava.Data.Context;
 using TesteNava.Data.Repository;
 using TesteNava.Domain.Interfaces;
+using TesteNava.Domain.Interfaces.Service;
+using TesteNava.Domain.Services;
 
 namespace TesteNava.API.Configuration
 {
@@ -17,6 +19,7 @@ namespace TesteNava.API.Configuration
             services.AddScoped<ISaleItemRepository, SaleItemRepository>();
             services.AddScoped<ISaleRepository, SaleRepository>();
             services.AddScoped<ISellerRepository, SellerRepository>();
+            services.AddScoped<ISaleService, SaleService>();
             return services;
         }
     }

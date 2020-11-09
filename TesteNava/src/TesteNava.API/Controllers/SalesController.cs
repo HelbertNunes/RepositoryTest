@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using TesteNava.API.ViewModels;
 using TesteNava.Domain.Interfaces;
+using TesteNava.Domain.Interfaces.Service;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,12 +16,15 @@ namespace TesteNava.API.Controllers
     [ApiController]
     public class SalesController : ControllerBase
     {
+        private readonly ISaleService _saleService;
         private readonly ISaleRepository _saleRepository;
         private readonly IMapper _mapper;
-        public SalesController(ISaleRepository saleRepository, IMapper mapper)
+        public SalesController(ISaleRepository saleRepository, IMapper mapper, ISaleService saleService)
         {
             _saleRepository = saleRepository;
             _mapper = mapper;
+            _saleService = saleService;
+            _saleService.CrateInitialRegisters();
         }
         // GET: api/<SalesController>
         [HttpGet]
@@ -31,7 +35,7 @@ namespace TesteNava.API.Controllers
         }
 
         // GET api/<SalesController>/5
-        [HttpGet("{Guid}")]
+        [HttpGet("{id:guid}")]
         public string GetSaleById(Guid id)
         {
             return "value";
