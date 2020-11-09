@@ -22,10 +22,10 @@ namespace TesteNava.Domain.Services
         public void CrateInitialRegisters()
         {
             var sellerTest = new Seller("11122233344", "Vendedor Teste", "vendedor@teste", "31945682354");
-            var saleTest = new Sale(sellerTest, "Aguardando Pagamento", DateTime.Now.Date);
+            var saleTest = new Sale(sellerTest, "Aguardando Pagamento", DateTime.Today.Date);
             var itemTest = new SaleItem("item", 9.90, saleTest);
             saleTest.AddItems(new List<SaleItem> { itemTest });
-
+            sellerTest.AddSale(saleTest);
 
             _sellerRepository.Add(sellerTest);
             _sellerRepository.SaveChanges();
