@@ -12,12 +12,7 @@ namespace TesteNava.Data.Context
 
         public DbSet<Sale> Sales { get; set; }
         public DbSet<SaleItem> SaleItems { get; set; }
-        public DbSet<Seller> Sellers { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseInMemoryDatabase("InMemoryProvider");
-        }
+        public DbSet<Seller> Sellers { get; set; }     
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

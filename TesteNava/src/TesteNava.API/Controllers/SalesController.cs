@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using TesteNava.API.ViewModels;
+using TesteNava.Domain.Interfaces;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,16 +15,24 @@ namespace TesteNava.API.Controllers
     [ApiController]
     public class SalesController : ControllerBase
     {
+        private readonly ISaleRepository _saleRepository;
+        private readonly IMapper _mapper;
+        public SalesController(ISaleRepository saleRepository, IMapper mapper)
+        {
+            _saleRepository = saleRepository;
+            _mapper = mapper;
+        }
         // GET: api/<SalesController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IEnumerable<SaleViewModel>> GetAllSales()
         {
-            return new string[] { "value1", "value2" };
+            var allSales = _mapper.Map<IEnumerable<SaleViewModel>>( await _saleRepository.GetAll());
+            return allSales;
         }
 
         // GET api/<SalesController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("{Guid}")]
+        public string GetSaleById(Guid id)
         {
             return "value";
         }
