@@ -19,5 +19,12 @@ namespace TesteNava.Data.Repository
                 .Include("SaleItems")
                 .Include("Seller.Sales").ToListAsync();
         }
+
+        public override Task<Sale> GetById(Guid id)
+        {            
+            return DbSet.Where(s => s.Id == id)
+                .Include("SaleItems")
+                .Include("Seller.Sales").FirstOrDefaultAsync();
+        }
     }
 }

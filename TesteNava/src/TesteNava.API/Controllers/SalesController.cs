@@ -29,15 +29,14 @@ namespace TesteNava.API.Controllers
         [HttpGet]
         public async Task<IEnumerable<SaleViewModel>> GetAllSales()
         {
-            var allSales = _mapper.Map<IEnumerable<SaleViewModel>>( await _saleRepository.GetAll());
-            return allSales;
+            return _mapper.Map<IEnumerable<SaleViewModel>>( await _saleRepository.GetAll());            
         }
 
-        // GET api/<SalesController>/5
+        // GET api/<SalesController>/Guid
         [HttpGet("{id:guid}")]
-        public string GetSaleById(Guid id)
+        public async Task<SaleViewModel> GetSaleById(Guid id)
         {
-            return "value";
+            return _mapper.Map<SaleViewModel>(await _saleRepository.GetById(id));            
         }
 
         // POST api/<SalesController>
