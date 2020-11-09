@@ -8,6 +8,7 @@ namespace TesteNava.Domain.Models
     {
         public string Name { get; set; }
         public double Value { get; set; }
-        public IEnumerable<Sale> Sales { get; set; }
+        public Guid SaleId { get; set; }
+        public Sale Sale { get; set; }
     }
 }

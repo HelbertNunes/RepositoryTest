@@ -17,7 +17,7 @@ namespace TesteNava.Data.Mappings
                 .IsRequired()
                 .HasColumnType("varchar(100)");
 
-            builder.ToTable("Sellers");
+            builder.ToTable("SaleItems");
         }
     }
 }

@@ -13,6 +13,10 @@ namespace TesteNava.Data.Mappings
         {
             builder.HasKey(s => s.Id);
 
+            builder.HasMany(s => s.SaleItems)
+                .WithOne(i => i.Sale)
+                .HasForeignKey(isa => isa.SaleId);
+
             builder.ToTable("Sales");
         }
     }
