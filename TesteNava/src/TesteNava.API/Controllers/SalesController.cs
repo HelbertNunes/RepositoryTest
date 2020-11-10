@@ -73,12 +73,6 @@ namespace TesteNava.API.Controllers
             else return BadRequest(response.Item2);
         }
 
-        // DELETE api/Sales/Id
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
-
         //Endpoint apenas para adicionar registros de teste no banco em memória
         [HttpGet("CreateRegisters")]
         public ActionResult CreateRegisters()
