@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using TesteNava.API.ViewModels;
 using TesteNava.Domain.Interfaces;
 using TesteNava.Domain.Interfaces.Service;
+using TesteNava.Domain.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -25,39 +26,47 @@ namespace TesteNava.API.Controllers
             _mapper = mapper;
             _saleService = saleService;
         }
-        // GET: api/<SalesController>
+        // GET: api/SalesController
         [HttpGet]
         public async Task<IEnumerable<SaleViewModel>> GetAllSales()
         {
-            return _mapper.Map<IEnumerable<SaleViewModel>>( await _saleRepository.GetAll());            
+            return _mapper.Map<IEnumerable<SaleViewModel>>(await _saleRepository.GetAll());
         }
 
-        // GET api/<SalesController>/Guid
+        // GET api/Sales/Guid
         [HttpGet("{id:guid}")]
-        public async Task<SaleViewModel> GetSaleById(Guid id)
+        public async Task<ActionResult<SaleViewModel>> GetSaleById(Guid id)
         {
-            return _mapper.Map<SaleViewModel>(await _saleRepository.GetById(id));            
+            var sale = _mapper.Map<SaleViewModel>(await _saleRepository.GetById(id));
+            if (sale == null) return NotFound();
+
+            return sale;
         }
 
-        // POST api/<SalesController>
+        // POST api/SalesController
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<ActionResult<SaleViewModel>> AddSale([FromBody] SaleViewModel saleViewModel)
         {
+            if (!ModelState.IsValid) return BadRequest();
+            var sale = _mapper.Map<Sale>(saleViewModel);
+
+            //await _saleService.RegisterSale(sale);
+            return Ok(saleViewModel);
         }
 
-        // PUT api/<SalesController>/5
+        // PUT api/Sales/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
-        // DELETE api/<SalesController>/5
+        // DELETE api/Sales/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
         }
 
-        //Endpoint apenas para adicionar registros de teste na memória
+        //Endpoint apenas para adicionar registros de teste no banco em memória
         [HttpGet("CreateRegisters")]
         public ActionResult CreateRegisters()
         {
