@@ -50,8 +50,11 @@ namespace TesteNava.API.Controllers
             if (!ModelState.IsValid) return BadRequest();
             var sale = _mapper.Map<Sale>(saleViewModel);
 
-            //await _saleService.RegisterSale(sale);
-            return Ok(saleViewModel);
+            var response = await _saleService.RegisterSale(sale);
+
+            if (response.Item1) return Ok(saleViewModel);
+
+            else return BadRequest(response.Item2);
         }
 
         // PUT api/Sales/5

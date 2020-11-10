@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using TesteNava.Domain.Interfaces;
 using TesteNava.Domain.Interfaces.Service;
 using TesteNava.Domain.Models;
+using TesteNava.Domain.Utils;
 
 namespace TesteNava.Domain.Services
 {
@@ -34,7 +37,48 @@ namespace TesteNava.Domain.Services
             _saleItemRepository.SaveChanges();
 
             _saleRepository.Add(saleTest);
-            _saleRepository.SaveChanges();            
+            _saleRepository.SaveChanges();
+        }
+
+        public async Task<Tuple<bool,string>> RegisterSale(Sale sale)
+        {
+            var validSaleTuple = ValidateSale(sale);
+
+            if (!validSaleTuple.Item1)
+            {
+                return validSaleTuple;
+            }
+
+            sale.Status = Consts.WaitingPayment;
+            await _saleRepository.Add(sale);
+            await _saleRepository.SaveChanges();
+
+            return validSaleTuple;
+        }
+
+        private Tuple<bool, string> ValidateSale(Sale sale)
+        {
+            var testSaleExists = _saleRepository.GetById(sale.Id).Result;
+            var testSellerExists = _sellerRepository.GetById(sale.SellerId).Result;
+
+            if (sale.Seller == null || sale.SellerId == null)
+            {
+                return new Tuple<bool, string>(false, Consts.NoSeller);
+            }
+            if (sale.SaleItems == null || !sale.SaleItems.Any())
+            {
+                return new Tuple<bool, string>(false, Consts.NoItems);
+            }
+            if (testSaleExists != null)
+            {
+                return new Tuple<bool, string>(false, Consts.SaleRegisteredAlready);
+            }
+            if(testSellerExists != null)
+            {
+                sale.Seller = testSellerExists;
+            }
+
+            return new Tuple<bool, string>(true, Consts.Ok);
         }
     }
 }
