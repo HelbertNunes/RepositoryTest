@@ -27,7 +27,11 @@ namespace TesteNava.Domain.Utils
             {
                 stringBuilder.AppendLine($"-{str}");
             }
-            return stringBuilder.ToString();
+
+            var buitStr= stringBuilder.ToString();
+            stringBuilder.Clear();
+
+            return buitStr;
         }
 
     }
