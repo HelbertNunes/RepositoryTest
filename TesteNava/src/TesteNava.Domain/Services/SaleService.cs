@@ -22,6 +22,7 @@ namespace TesteNava.Domain.Services
             _saleItemRepository = saleItemRepository;
             _sellerRepository = sellerRepository;
         }
+
         public void CrateInitialRegisters()
         {
             var sellerTest = new Seller("11122233344", "Vendedor Teste", "vendedor@teste", "31945682354");
@@ -40,7 +41,7 @@ namespace TesteNava.Domain.Services
             _saleRepository.SaveChanges();
         }
 
-        public async Task<Tuple<bool,string>> RegisterSale(Sale sale)
+        public async Task<Tuple<bool, string>> RegisterSale(Sale sale)
         {
             var validSaleTuple = ValidateSale(sale);
 
@@ -65,20 +66,61 @@ namespace TesteNava.Domain.Services
             {
                 return new Tuple<bool, string>(false, Consts.NoSeller);
             }
+
             if (sale.SaleItems == null || !sale.SaleItems.Any())
             {
                 return new Tuple<bool, string>(false, Consts.NoItems);
             }
+
             if (testSaleExists != null)
             {
                 return new Tuple<bool, string>(false, Consts.SaleRegisteredAlready);
             }
-            if(testSellerExists != null)
+
+            if (testSellerExists != null)
             {
                 sale.Seller = testSellerExists;
             }
 
             return new Tuple<bool, string>(true, Consts.Ok);
+        }
+
+        public async Task<Tuple<bool, string, Sale>> UpdateStatus(Sale sale, string newStatus)
+        {
+            if (!Consts.StatusList.Contains(newStatus))
+            {
+                return new Tuple<bool, string, Sale>(false, Consts.StatusDontExistMessage, sale);
+            }
+
+            if (IsValidStatusChange(sale.Status, newStatus))
+            {
+                sale.Status = newStatus;
+                await _saleRepository.Update(sale);
+                await _saleRepository.SaveChanges();
+                return new Tuple<bool, string, Sale>(true, Consts.Ok, sale);
+            }
+
+            return new Tuple<bool, string, Sale>(false, Consts.InvalidStatusChange, sale);
+        }
+
+        private bool IsValidStatusChange(string status, string newStatus)
+        {
+            if (status == Consts.WaitingPayment)
+            {
+                if (newStatus == Consts.PaymentApproved || newStatus == Consts.Canceled) return true;
+            }
+
+            if (status == Consts.PaymentApproved)
+            {
+                if (newStatus == Consts.SentToTransport || newStatus == Consts.Canceled) return true;
+            }
+
+            if (status == Consts.SentToTransport)
+            {
+                if (newStatus == Consts.Delivered) return true;
+            }
+
+            return false;
         }
     }
 }

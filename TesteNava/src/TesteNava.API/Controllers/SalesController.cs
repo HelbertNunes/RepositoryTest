@@ -8,6 +8,7 @@ using TesteNava.API.ViewModels;
 using TesteNava.Domain.Interfaces;
 using TesteNava.Domain.Interfaces.Service;
 using TesteNava.Domain.Models;
+using TesteNava.Domain.Utils;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,13 +21,14 @@ namespace TesteNava.API.Controllers
         private readonly ISaleService _saleService;
         private readonly ISaleRepository _saleRepository;
         private readonly IMapper _mapper;
+
         public SalesController(ISaleRepository saleRepository, IMapper mapper, ISaleService saleService)
         {
             _saleRepository = saleRepository;
             _mapper = mapper;
             _saleService = saleService;
         }
-        // GET: api/SalesController
+        // GET: api/Sales
         [HttpGet]
         public async Task<IEnumerable<SaleViewModel>> GetAllSales()
         {
@@ -38,12 +40,12 @@ namespace TesteNava.API.Controllers
         public async Task<ActionResult<SaleViewModel>> GetSaleById(Guid id)
         {
             var sale = _mapper.Map<SaleViewModel>(await _saleRepository.GetById(id));
-            if (sale == null) return NotFound();
+            if (sale == null) return NotFound(Consts.DontExists);
 
             return sale;
         }
 
-        // POST api/SalesController
+        // POST api/Sales
         [HttpPost]
         public async Task<ActionResult<SaleViewModel>> AddSale([FromBody] SaleViewModel saleViewModel)
         {
@@ -57,13 +59,21 @@ namespace TesteNava.API.Controllers
             else return BadRequest(response.Item2);
         }
 
-        // PUT api/Sales/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        // PUT api/Sales/Status/Id
+        [HttpPut("Status/{id:guid}")]
+        public async Task<ActionResult<SaleViewModel>> Put(Guid id, [FromBody] string newStatus)
         {
+            var sale = _mapper.Map<Sale>(await _saleRepository.GetById(id));
+            if (sale == null) return NotFound(Consts.DontExists);
+
+            var response = await _saleService.UpdateStatus(sale, newStatus);
+
+            if (response.Item1) return Ok(response.Item3);
+
+            else return BadRequest(response.Item2);
         }
 
-        // DELETE api/Sales/5
+        // DELETE api/Sales/Id
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
